@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="trading-engine-service" />
+        <module name="config-server" />
+        <module name="market-data-service" />
+        <module name="charting-service" />
+        <module name="gateway-service" />
+        <module name="user-management-service" />
+        <module name="discover-server" />
+        <module name="strategy-service" />
+        <module name="notification-service" />
+        <module name="portfolio-service" />
+      </profile>
+    </annotationProcessing>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="charting-service" options="-parameters" />
+      <module name="config-server" options="-parameters" />
+      <module name="discover-server" options="-parameters" />
+      <module name="gateway-service" options="-parameters" />
+      <module name="market-data-service" options="-parameters" />
+      <module name="notification-service" options="-parameters" />
+      <module name="portfolio-service" options="-parameters" />
+      <module name="strategy-service" options="-parameters" />
+      <module name="trading-engine-service" options="-parameters" />
+      <module name="user-management-service" options="-parameters" />
+    </option>
+  </component>
+</project>
