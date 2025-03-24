@@ -1,6 +1,7 @@
 package com.fxsimulator.usermanagementservice.service.impl;
 
 import com.fxsimulator.usermanagementservice.dto.requests.UserDto;
+import com.fxsimulator.usermanagementservice.dto.response.UserResponseDto;
 import com.fxsimulator.usermanagementservice.entity.Role;
 import com.fxsimulator.usermanagementservice.entity.User;
 import com.fxsimulator.usermanagementservice.enums.RoleType;
@@ -11,7 +12,9 @@ import com.fxsimulator.usermanagementservice.utils.ModelMapperConfig;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -31,26 +34,31 @@ public class UserServiceImpl implements UserService {
             throw new RuntimeException("Email already exists!");
         }
 
-        RoleType roleType;
+
         Role role = roleRepository.findByName(dto.getRoleType())
                 .orElseThrow(() -> new RuntimeException("Role not found"));
 
-        User user = modelMapperConfig.convertToEntity(dto);
 
+
+        User user = modelMapperConfig.convertToEntity(dto);
+        Set<Role> roles = new HashSet<>();
+        roles.add(role);
+
+        user.setRoles(roles);
         userRepository.save(user);
 
         return "user as been created";
     }
 
     @Override
-    public UserDto getUserByEmail(String email) {
+    public UserResponseDto getUserByEmail(String email) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         return modelMapperConfig.convertToDto(user);
     }
 
     @Override
-    public List<UserDto> getAllUser() {
+    public List<UserResponseDto> getAllUser() {
         return userRepository.findAll()
                 .stream()
                 .map(modelMapperConfig::convertToDto)

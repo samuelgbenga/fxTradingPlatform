@@ -1,6 +1,7 @@
 package com.fxsimulator.usermanagementservice.service;
 
 import com.fxsimulator.usermanagementservice.dto.requests.UserDto;
+import com.fxsimulator.usermanagementservice.dto.response.UserResponseDto;
 
 import java.util.List;
 
@@ -11,11 +12,11 @@ public interface UserService {
 
    // String getUserById(Long id);
 
-    UserDto getUserByEmail(String email);
+    UserResponseDto getUserByEmail(String email);
 
     //String getUserByUserName(String userName);
 
-    List<UserDto> getAllUser();
+    List<UserResponseDto> getAllUser();
 
     String updateUser(String email, UserDto dto);
 

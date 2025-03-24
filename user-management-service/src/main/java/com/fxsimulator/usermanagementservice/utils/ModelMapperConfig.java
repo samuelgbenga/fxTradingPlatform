@@ -1,6 +1,7 @@
 package com.fxsimulator.usermanagementservice.utils;
 
 import com.fxsimulator.usermanagementservice.dto.requests.UserDto;
+import com.fxsimulator.usermanagementservice.dto.response.UserResponseDto;
 import com.fxsimulator.usermanagementservice.entity.User;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
@@ -20,8 +21,8 @@ public class ModelMapperConfig {
         return modelMapper;
     }
 
-    public UserDto convertToDto(User user) {
-        return modelMapper.map(user, UserDto.class);
+    public UserResponseDto convertToDto(User user) {
+        return modelMapper.map(user, UserResponseDto.class);
     }
 
     public User convertToEntity(UserDto userDto) {

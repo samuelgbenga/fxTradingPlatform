@@ -1,6 +1,7 @@
 package com.fxsimulator.usermanagementservice.controller;
 
 import com.fxsimulator.usermanagementservice.dto.requests.UserDto;
+import com.fxsimulator.usermanagementservice.dto.response.UserResponseDto;
 import com.fxsimulator.usermanagementservice.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -21,12 +22,12 @@ public class UserController {
     }
 
     @GetMapping("/{email}")
-    public ResponseEntity<UserDto> getUserByEmail(@PathVariable String email) {
+    public ResponseEntity<UserResponseDto> getUserByEmail(@PathVariable String email) {
         return ResponseEntity.ok(userService.getUserByEmail(email));
     }
 
     @GetMapping
-    public ResponseEntity<List<UserDto>> getAllUsers() {
+    public ResponseEntity<List<UserResponseDto>> getAllUsers() {
         return ResponseEntity.ok(userService.getAllUser());
     }
 

@@ -5,7 +5,7 @@ import jakarta.persistence.Column;
 import lombok.*;
 
 @Data
-@Builder
+@NoArgsConstructor
 @AllArgsConstructor
 public class UserDto {
 
@@ -22,5 +22,7 @@ public class UserDto {
     private String imageUrl;
 
     private RoleType roleType;
+
+    private String password;
 
 }
