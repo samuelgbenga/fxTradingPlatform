@@ -1,14 +1,16 @@
 package com.fxsimulator.usermanagementservice.service;
 
+//import com.fxsimulator.usermanagementservice.dto.requests.ImageRequestDto;
 import com.fxsimulator.usermanagementservice.dto.requests.UserDto;
 import com.fxsimulator.usermanagementservice.dto.response.UserResponseDto;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 public interface UserService {
 
     // for now will be returning string
-    String create(UserDto dto);
+    UserResponseDto create(UserDto dto);
 
    // String getUserById(Long id);
 
@@ -18,7 +20,7 @@ public interface UserService {
 
     List<UserResponseDto> getAllUser();
 
-    String updateUser(String email, UserDto dto);
+    UserResponseDto updateUser(String email, UserDto dto);
 
     String deleteUser(String email);
 }

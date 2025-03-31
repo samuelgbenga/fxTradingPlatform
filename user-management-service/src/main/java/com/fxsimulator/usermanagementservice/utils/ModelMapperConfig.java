@@ -32,4 +32,9 @@ public class ModelMapperConfig {
     public void updateEntityFromDto(UserDto dto, User user) {
         modelMapper.map(dto, user);
     }
+
+//    public void userRequestDtoToUserDto(UserDto dto, User user) {
+//        modelMapper.map(dto, user);
+//    }
+
 }

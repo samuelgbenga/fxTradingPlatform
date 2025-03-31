@@ -3,6 +3,7 @@ package com.fxsimulator.usermanagementservice.dto.requests;
 import com.fxsimulator.usermanagementservice.enums.RoleType;
 import jakarta.persistence.Column;
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @Data
 @NoArgsConstructor
@@ -24,5 +25,7 @@ public class UserDto {
     private RoleType roleType;
 
     private String password;
+
+    private MultipartFile file;
 
 }

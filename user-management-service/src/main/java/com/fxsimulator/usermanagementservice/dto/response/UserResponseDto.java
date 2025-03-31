@@ -1,5 +1,6 @@
 package com.fxsimulator.usermanagementservice.dto.response;
 
+import com.fxsimulator.usermanagementservice.entity.Image;
 import com.fxsimulator.usermanagementservice.entity.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,7 +24,7 @@ public class UserResponseDto {
 
     private String middleName ;
 
-    private String imageUrl;
+    private Image image;
 
     private Set<Role> roles;
 

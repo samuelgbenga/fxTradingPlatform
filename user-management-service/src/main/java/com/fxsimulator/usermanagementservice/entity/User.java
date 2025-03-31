@@ -50,4 +50,9 @@ public class User {
     )
     private Set<Role> roles;
 
+
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "image_id", referencedColumnName = "publicId")
+    private Image image;  // Store reference to Image entity
+
 }

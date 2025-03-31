@@ -1,20 +1,27 @@
 package com.fxsimulator.usermanagementservice.service.impl;
 
 import com.fxsimulator.usermanagementservice.dto.requests.UserDto;
+import com.fxsimulator.usermanagementservice.dto.response.ImageResponseDto;
 import com.fxsimulator.usermanagementservice.dto.response.UserResponseDto;
+import com.fxsimulator.usermanagementservice.entity.Image;
 import com.fxsimulator.usermanagementservice.entity.Role;
 import com.fxsimulator.usermanagementservice.entity.User;
 import com.fxsimulator.usermanagementservice.enums.RoleType;
+import com.fxsimulator.usermanagementservice.repository.ImageRepository;
 import com.fxsimulator.usermanagementservice.repository.RoleRepository;
 import com.fxsimulator.usermanagementservice.repository.UserRepository;
+import com.fxsimulator.usermanagementservice.service.CloudinaryService;
 import com.fxsimulator.usermanagementservice.service.UserService;
 import com.fxsimulator.usermanagementservice.utils.ModelMapperConfig;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -27,8 +34,12 @@ public class UserServiceImpl implements UserService {
 
     private final ModelMapperConfig modelMapperConfig;
 
+    private final CloudinaryService cloudinaryService;
+
+    private final ImageRepository imageRepository;
+
     @Override
-    public String create(UserDto dto) {
+    public UserResponseDto create(UserDto dto) {
 
         if (userRepository.existsByEmail(dto.getEmail())) {
             throw new RuntimeException("Email already exists!");
@@ -39,15 +50,18 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new RuntimeException("Role not found"));
 
 
+        // upload image
+       Image image = upLoadImage(dto.getFile());
 
         User user = modelMapperConfig.convertToEntity(dto);
+        user.setImage(image);
         Set<Role> roles = new HashSet<>();
         roles.add(role);
 
         user.setRoles(roles);
-        userRepository.save(user);
+        UserResponseDto userResponseDto = modelMapperConfig.convertToDto(userRepository.save(user));
 
-        return "user as been created";
+        return userResponseDto;
     }
 
     @Override
@@ -66,21 +80,48 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String updateUser(String email, UserDto dto) {
+    public UserResponseDto updateUser(String email, UserDto dto) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         modelMapperConfig.updateEntityFromDto(dto, user);
 
-        userRepository.save(user);
-        return "User has been updated";
+        UserResponseDto userResponseDto = modelMapperConfig.convertToDto(userRepository.save(user));
+        return userResponseDto;
     }
 
     @Override
     public String deleteUser(String email) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
+        // make this process asynchronous
+        //cloudinaryService.deleteFile(user.getImage().getPublicId());
+        deleteUserAsync(user);
         userRepository.delete(user);
         return "User has been deleted";
+    }
+
+
+    private Image upLoadImage(MultipartFile file){
+
+        ImageResponseDto imageResponseDto = cloudinaryService.uploadFile(file);
+
+        return imageRepository.save(new Image(imageResponseDto.getPublicId(), imageResponseDto.getImageUrl()));
+    }
+
+    @Async
+    private CompletableFuture<Void> deleteUserAsync(User user) {
+        try {
+            // Delete image from Cloudinary
+            if (user.getImage() != null) {
+                cloudinaryService.deleteFile(user.getImage().getPublicId());
+            }
+            // Delete user from database
+            userRepository.delete(user);
+        } catch (Exception e) {
+            // Log error
+            System.err.println("Error deleting user asynchronously: " + e.getMessage());
+        }
+        return CompletableFuture.completedFuture(null);
     }
 }
