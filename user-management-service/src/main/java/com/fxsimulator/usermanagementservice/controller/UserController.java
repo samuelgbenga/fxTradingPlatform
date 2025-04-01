@@ -4,6 +4,7 @@ import com.fxsimulator.usermanagementservice.dto.requests.UserDto;
 import com.fxsimulator.usermanagementservice.dto.response.ApiResponse;
 import com.fxsimulator.usermanagementservice.dto.response.UserResponseDto;
 import com.fxsimulator.usermanagementservice.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<ApiResponse<UserResponseDto>> createUser(@ModelAttribute UserDto dto) {
+    public ResponseEntity<ApiResponse<UserResponseDto>> createUser(@Valid @ModelAttribute UserDto dto) {
         UserResponseDto userResponseDto = userService.create(dto);
         ApiResponse<UserResponseDto> response = new ApiResponse<>(
                 "success",
