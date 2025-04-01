@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.Set;
 
 @Entity
@@ -38,6 +39,9 @@ public class User {
 
     @Column
     private String imageUrl;
+
+    @Column
+    private LocalDate birthDate;
 
     @Column(nullable = false)
     private String password; // Will hash this later
