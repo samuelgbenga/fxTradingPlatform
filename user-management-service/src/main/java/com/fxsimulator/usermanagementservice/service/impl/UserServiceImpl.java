@@ -6,7 +6,7 @@ import com.fxsimulator.usermanagementservice.dto.response.UserResponseDto;
 import com.fxsimulator.usermanagementservice.entity.Image;
 import com.fxsimulator.usermanagementservice.entity.Role;
 import com.fxsimulator.usermanagementservice.entity.User;
-import com.fxsimulator.usermanagementservice.enums.RoleType;
+import com.fxsimulator.usermanagementservice.exception.*;
 import com.fxsimulator.usermanagementservice.repository.ImageRepository;
 import com.fxsimulator.usermanagementservice.repository.RoleRepository;
 import com.fxsimulator.usermanagementservice.repository.UserRepository;
@@ -42,12 +42,12 @@ public class UserServiceImpl implements UserService {
     public UserResponseDto create(UserDto dto) {
 
         if (userRepository.existsByEmail(dto.getEmail())) {
-            throw new RuntimeException("Email already exists!");
+            throw new UserAlreadyExistsException("Email already exists!");
         }
 
 
         Role role = roleRepository.findByName(dto.getRoleType())
-                .orElseThrow(() -> new RuntimeException("Role not found"));
+                .orElseThrow(() -> new RoleNotFoundException("Role not found"));
 
 
         // upload image
@@ -67,7 +67,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponseDto getUserByEmail(String email) {
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
         return modelMapperConfig.convertToDto(user);
     }
 
@@ -82,7 +82,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponseDto updateUser(String email, UserDto dto) {
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
 
         modelMapperConfig.updateEntityFromDto(dto, user);
 
@@ -93,7 +93,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public String deleteUser(String email) {
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
         // make this process asynchronous
         //cloudinaryService.deleteFile(user.getImage().getPublicId());
         deleteUserAsync(user);
@@ -104,9 +104,12 @@ public class UserServiceImpl implements UserService {
 
     private Image upLoadImage(MultipartFile file){
 
-        ImageResponseDto imageResponseDto = cloudinaryService.uploadFile(file);
-
-        return imageRepository.save(new Image(imageResponseDto.getPublicId(), imageResponseDto.getImageUrl()));
+        try {
+            ImageResponseDto imageResponseDto = cloudinaryService.uploadFile(file);
+            return imageRepository.save(new Image(imageResponseDto.getPublicId(), imageResponseDto.getImageUrl()));
+        } catch (Exception e) {
+            throw new ImageUploadException("Failed to upload image");
+        }
     }
 
     @Async
@@ -120,7 +123,7 @@ public class UserServiceImpl implements UserService {
             userRepository.delete(user);
         } catch (Exception e) {
             // Log error
-            System.err.println("Error deleting user asynchronously: " + e.getMessage());
+            throw new ImageDeletionException("Error deleting user asynchronously: " + e.getMessage());
         }
         return CompletableFuture.completedFuture(null);
     }
