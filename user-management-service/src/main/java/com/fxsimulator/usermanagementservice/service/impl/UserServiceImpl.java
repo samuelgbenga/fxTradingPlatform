@@ -103,7 +103,6 @@ public class UserServiceImpl implements UserService {
 
 
     private Image upLoadImage(MultipartFile file){
-
         try {
             ImageResponseDto imageResponseDto = cloudinaryService.uploadFile(file);
             return imageRepository.save(new Image(imageResponseDto.getPublicId(), imageResponseDto.getImageUrl()));
