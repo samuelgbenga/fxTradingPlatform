@@ -4,6 +4,7 @@ import com.fxsimulator.usermanagementservice.enums.RoleType;
 
 import com.fxsimulator.usermanagementservice.utils.custom_validator.AgeLimit;
 import com.fxsimulator.usermanagementservice.utils.custom_validator.UniqueUsername;
+import com.fxsimulator.usermanagementservice.utils.custom_validator.ValidPassword;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -43,8 +44,7 @@ public class UserDto {
     @AgeLimit(minimumAge = 16, message = "You are too young to attend the meeting")
     private LocalDate birthDate;
 
-    @NotBlank(message = "Password is required")
-    @Size(min = 8, message = "Password must be at least 8 characters long")
+    @ValidPassword
     private String password;
 
     private MultipartFile file; // No validation because it's optional
