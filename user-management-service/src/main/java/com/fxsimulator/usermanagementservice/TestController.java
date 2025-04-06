@@ -20,8 +20,14 @@ public class TestController {
     @Value("${cloudinary.cloud-name}")
     private String name;
 
+    @Value("${spring.mail.username}")
+    private String emailName;
+
+    @Value("${spring.mail.password}")
+    private String password;
+
     @GetMapping("/hello")
     public String sayHello() {
-        return "Hello from API Gateway! \n" + name +"\n"+secret+"\n"+key ;
+        return "Hello from API Gateway! \n" + password +"\n"+secret+"\n"+key ;
     }
 }
