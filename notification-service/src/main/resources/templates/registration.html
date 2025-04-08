@@ -51,15 +51,14 @@
 </head>
 <body>
 <div class="container">
-<!--    <h1 class="welcome-title">Welcome, <span th:text="${user.fullName}"></span>!</h1>-->
-    <h1 class="welcome-title">Welcome, Full Name!</h1>
+    <h1 class="welcome-title">Welcome, <span th:text="${fullName}"></span>!</h1>
     <p class="message">
         Congratulations! Your registration was successful.<br><br>
         We’re excited to have you on board. You can now log in and start exploring all the features our application offers.
     </p>
 
     <div class="cta-button">
-<!--        <a th:href="${loginLink}" target="_blank">Login to Your Account</a>-->
+        <a th:href="${loginLink}" target="_blank">Login to Your Account</a>
         <a target="_blank">Login to Your Account</a>
     </div>
 

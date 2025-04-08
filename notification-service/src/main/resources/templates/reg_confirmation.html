@@ -55,7 +55,7 @@
 <div class="container">
     <h1>Welcome to Our Application!</h1>
     <div class="content">
-        <p>Hi <span th:text="${user.fullName}"></span>,</p>
+        <p>Hi <span th:text="${fullName}"></span>,</p>
         <p>Thank you for registering with us! To complete your registration, please confirm your email address by clicking the link below:</p>
         <a th:href="${confirmationLink}" class="button">Confirm Email</a>
     </div>
