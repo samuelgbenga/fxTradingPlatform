@@ -1,0 +1,10 @@
+⚠️ Note on Gmail and others:
+Gmail usually requires the From address to match the authenticated user unless you're using a custom domain with proper SPF/DKIM setup.
+
+Some providers will reject emails or put them in spam if From address doesn't match the authenticated email account.
+
+✅ TL;DR:
+Property	Purpose	Can differ?
+spring.mail.username	SMTP auth username	✅ Yes
+application.mail.email-system	Logical/system “from” address	✅ Yes (if allowed by SMTP provider)
+Let me know which SMTP provider you're using (Gmail, SendGrid, Mailgun, etc.) and I’ll give you more specific advice!

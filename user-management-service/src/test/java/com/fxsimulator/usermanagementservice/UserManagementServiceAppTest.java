@@ -1,4 +1,4 @@
-package com.fxsimulator.user-management-service;
+package com.fxsimulator.usermanagementservice;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -25,7 +25,7 @@ public class UserManagementServiceAppTest
      */
     public static Test suite()
     {
-        return new TestSuite( com.fxsimulator.user.UserManagementServiceAppTest.class );
+        return new TestSuite( com.fxsimulator.usermanagementservice.UserManagementServiceAppTest.class );
     }
 
     /**

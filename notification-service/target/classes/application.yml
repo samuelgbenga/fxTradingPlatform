@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: notificationservice
+  config:
+    import: "configserver:http://root:s3cr3t@localhost:8888"
+
+logging:
+  level:
+    org.springframework.core.env: DEBUG
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh
+
+

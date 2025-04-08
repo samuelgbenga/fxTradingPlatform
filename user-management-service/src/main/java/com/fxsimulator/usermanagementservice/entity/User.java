@@ -29,6 +29,9 @@ public class User {
     private String email;
 
     @Column(nullable = false)
+    private boolean isEmailVerified = false;
+
+    @Column(nullable = false)
     private String firstName ;
 
     @Column(nullable = false)
