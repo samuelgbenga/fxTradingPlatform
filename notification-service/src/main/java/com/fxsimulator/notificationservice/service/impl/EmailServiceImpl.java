@@ -40,7 +40,7 @@ public class EmailServiceImpl implements EmailService {
         Map<String, Object> properties = new HashMap<>();
         properties.put("fullName", dto.fullName());
         properties.put("confirmationLink", dto.extra());
-        sendMail(dto.to(), dto.subject(), properties, REG_CONFIRMATION_TEMPLATE);
+        sendMail(dto.to(), dto.subject(), properties, REGISTRATION_TEMPLATE );
     }
 
 
@@ -50,7 +50,7 @@ public class EmailServiceImpl implements EmailService {
         Map<String, Object> properties = new HashMap<>();
         properties.put("fullName", dto.fullName());
         properties.put("loginLink", dto.extra());
-        sendMail(dto.to(), dto.subject(), properties, REGISTRATION_TEMPLATE);
+        sendMail(dto.to(), dto.subject(), properties,  REG_CONFIRMATION_TEMPLATE);
     }
 
 
@@ -77,9 +77,4 @@ public class EmailServiceImpl implements EmailService {
             log.error(e.getLocalizedMessage());
         }
     }
-
-
-
-
-
 }

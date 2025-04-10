@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Our Application</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 600px;
+            margin: 10px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .welcome-title {
+            text-align: center;
+            color: #007bff;
+        }
+        .message {
+            font-size: 16px;
+            line-height: 1.5;
+        }
+        .cta-button {
+            display: block;
+            text-align: center;
+            margin-top: 30px;
+        }
+        .cta-button a {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #28a745;
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 5px;
+        }
+        .footer {
+            margin-top: 40px;
+            text-align: center;
+            font-size: 14px;
+            color: #888888;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1 class="welcome-title">Welcome, <span th:text="${fullName}"></span>!</h1>
+    <p class="message">
+        Congratulations! Your registration was successful.<br><br>
+        We’re excited to have you on board. You can now log in and start exploring all the features our application offers.
+    </p>
+
+    <div class="cta-button">
+        <a th:href="${loginLink}" target="_blank">Login to Your Account</a>
+        <a target="_blank">Login to Your Account</a>
+    </div>
+
+    <p class="message">
+        If you didn’t sign up for this account, please contact our support team immediately.
+    </p>
+
+    <div class="footer">
+        © 2025 Fx-Replay. All rights reserved.
+    </div>
+</div>
+</body>
+</html>

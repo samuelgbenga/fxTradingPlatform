@@ -11,6 +11,7 @@ import com.fxsimulator.usermanagementservice.repository.ImageRepository;
 import com.fxsimulator.usermanagementservice.repository.RoleRepository;
 import com.fxsimulator.usermanagementservice.repository.UserRepository;
 import com.fxsimulator.usermanagementservice.service.CloudinaryService;
+import com.fxsimulator.usermanagementservice.service.NotificationService;
 import com.fxsimulator.usermanagementservice.service.UserService;
 import com.fxsimulator.usermanagementservice.utils.ModelMapperConfig;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
@@ -37,6 +39,8 @@ public class UserServiceImpl implements UserService {
     private final CloudinaryService cloudinaryService;
 
     private final ImageRepository imageRepository;
+
+    private final NotificationService notificationService;
 
     @Override
     public UserResponseDto create(UserDto dto) {
@@ -61,6 +65,10 @@ public class UserServiceImpl implements UserService {
         user.setRoles(roles);
         UserResponseDto userResponseDto = modelMapperConfig.convertToDto(userRepository.save(user));
 
+        // middle name avoiding null error
+        String middleName = Objects.toString(user.getMiddleName(), "");
+        String fullName = String.format("%s %s %s", user.getFirstName(), middleName, user.getLastName()).trim();
+        notificationService.sendRegEmail(user.getEmail(), "Registration Successful",  fullName, "Login link" );
         return userResponseDto;
     }
 
@@ -94,8 +102,7 @@ public class UserServiceImpl implements UserService {
     public String deleteUser(String email) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
-        // make this process asynchronous
-        //cloudinaryService.deleteFile(user.getImage().getPublicId());
+
         deleteUserAsync(user);
         userRepository.delete(user);
         return "User has been deleted";

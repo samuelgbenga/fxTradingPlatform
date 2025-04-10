@@ -8,3 +8,36 @@ Property	Purpose	Can differ?
 spring.mail.username	SMTP auth username	✅ Yes
 application.mail.email-system	Logical/system “from” address	✅ Yes (if allowed by SMTP provider)
 Let me know which SMTP provider you're using (Gmail, SendGrid, Mailgun, etc.) and I’ll give you more specific advice!
+
+
+*************************************
+Implementing Resiliance4j CircuitBreaker
+*************************************
+ use @CircuitBreaker with Resilience4j:
+
+@Service
+public class UserService {
+
+    @Autowired
+    private NotificationRestClient notificationRestClient;
+
+    @CircuitBreaker(name = "notificationService", fallbackMethod = "fallbackSendNotification")
+    public void registerUser(UserDTO user) {
+        notificationRestClient.sendNotification(user.toNotificationRequest());
+    }
+
+    public void fallbackSendNotification(UserDTO user, Throwable t) {
+        // Handle fallback logic
+        log.warn("Notification service failed. Reason: {}", t.getMessage());
+    }
+}
+And configure in application.yml:
+
+
+resilience4j.circuitbreaker:
+  instances:
+    notificationService:
+      registerHealthIndicator: true
+      slidingWindowSize: 5
+      failureRateThreshold: 50
+      waitDurationInOpenState: 10s

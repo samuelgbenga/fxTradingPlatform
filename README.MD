@@ -28,6 +28,10 @@
 
 ## Start small
 - lets do simple registration first.
+  - Focus:
+  - Use FeingClient for the Notification connection
+  - Use Circuit breaker
+
 - MFA Authentication (Simple email verification)
 - then we implement OAuth2 for google registeration
 - then service to service jwt implementation on header
@@ -38,3 +42,5 @@ Best Practice:
 Use simple authentication (email verification) at registration 📝.
 
 Enforce MFA for high-risk actions (admin login, transactions, password reset). 🔐
+
+
